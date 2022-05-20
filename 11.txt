@@ -1,0 +1,71 @@
+#include <iostream>
+#include <conio.h>
+#include <locale.h>
+#include <stdlib.h>
+#include <time.h>
+
+void sort(int* arr, int begin, int end) {
+	if (end - begin + 1 < 5) {
+		for (int i = begin + 1; i <= end; i++) {
+			int temp = arr[i];
+			int j;
+			for (j = i; j > begin && arr[j - 1] > temp; j--) {
+				arr[j] = arr[j - 1];
+			}
+			arr[j] = temp;
+
+		}
+	}
+	else {
+		sort(arr, begin, (begin + end) / 2);
+		sort(arr, (begin + end) / 2 + 1, end);
+		int i = begin;
+		int j = (begin + end) / 2 + 1;
+		int* temp = (int*)malloc((end - begin + 1) * sizeof(int));
+		for (int t = 0; t <= end - begin; t++) {
+			if ((arr[i] < arr[j] && i <= (begin + end) / 2) || j > end) {
+				temp[t] = arr[i];
+				i++;
+			}
+			else {
+				temp[t] = arr[j];
+				j++;
+			}
+		}
+		for (int t = 0; t <= end - begin; t++) {
+			arr[begin + t] = temp[t];
+		}
+		free(temp);
+	}
+}
+
+int main(void)
+{
+	setlocale(LC_ALL, "Rus");
+	srand(time(NULL));
+
+	int size;
+	int* arr;
+
+	printf("Введите размер массива: ");
+	scanf_s("%d", &size);
+	arr = (int*)malloc(size * sizeof(int));
+
+	printf("Исходный массив:\n");
+	for (int i = 0; i < size; i++) {
+		arr[i] = rand() % 1000;
+		printf("%d ", arr[i]);
+	}
+	printf("\n");
+	
+	sort(arr, 0, size-1);
+
+	printf("Отсортированный массив:\n");
+	for (int i = 0; i < size; i++) {
+		printf("%d ", arr[i]);
+	}
+	printf("\n");
+
+	free(arr);
+	_getch();
+}

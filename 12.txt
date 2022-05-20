@@ -1,0 +1,98 @@
+#include <iostream>
+#include <conio.h>
+#include <locale.h>
+#include <malloc.h>
+
+
+int main() {
+	setlocale(LC_ALL, "Rus");
+
+	int** matrix;
+	int** temp;
+	int* p;
+	int count;
+	int min, imin, jmin;
+	int begin, end;
+
+	printf("Введите количество деталей: ");
+	scanf_s("%d", &count);
+	matrix = (int**)malloc(count * sizeof(int*));
+	temp = (int**)malloc(count * sizeof(int*));
+	p = (int*)malloc(count * sizeof(int));
+	for (int i = 0; i < count; i++) {
+		matrix[i] = (int*)malloc(2 * sizeof(int));
+		temp[i] = (int*)malloc(2 * sizeof(int));
+		printf("Введите %d-ю строку матрицы времён обработки через пробел: ", i + 1);
+		scanf_s("%d %d", &matrix[i][0], &matrix[i][1]);
+		temp[i][0] = matrix[i][0];
+		temp[i][1] = matrix[i][1];
+	}
+
+	begin = 0;
+	end = count - 1;
+	for (int k = 0; k < count; k++) {
+		for (int i = 0; i < count; i++) {
+			if (temp[i][0] != 0) {
+				min = temp[i][0];
+				imin = i;
+				jmin = 0;
+				break;
+			}
+		}
+		for (int i = 0; i < count; i++) {
+			for (int j = 0; j < 2; j++) {
+				if (temp[i][j] < min && temp[i][j] != 0) {
+					min = temp[i][j];
+					imin = i;
+					jmin = j;
+				}
+			}
+		}
+		if (jmin == 0) {
+			p[begin] = imin;
+			begin++;
+		}
+		else {
+			p[end] = imin;
+			end--;
+		}
+		temp[imin][0] = 0;
+		temp[imin][1] = 0;
+	}
+
+	printf("P = (");
+	for (int i = 0; i < count; i++) {
+		printf("%d", p[i]+1);
+		if (i != count - 1) {
+			printf(", ");
+		}
+	}
+	printf(")\n");
+
+	printf("График Ганта\n");
+	printf("1 станок: ");
+	for (int i = 0; i < count; i++) {
+		for (int j = 0; j < matrix[p[i]][0]; j++) {
+			printf("%d", p[i]+1);
+		}
+	}
+	printf("\n");
+	int time = 0;
+	int sum = 0;
+	printf("2 станок: ");
+	for (int i = 0; i < count; i++) {
+		sum += matrix[p[i]][0];
+		while (time < sum) {
+			printf(" ");
+			time++;
+		}
+		for (int j = 0; j < matrix[p[i]][1]; j++) {
+			printf("%d", p[i] + 1);
+			time++;
+		}
+	}
+	printf("\n");
+	printf("Время обработки = %d", time);
+
+	_getch();
+}

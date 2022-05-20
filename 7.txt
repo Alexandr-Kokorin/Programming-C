@@ -1,0 +1,47 @@
+#include <iostream>
+#include <conio.h>
+#include <locale.h>
+
+int main() {
+	setlocale(LC_ALL, "Rus");
+
+	char symbol1, symbol0 = ' ';
+	int	count = 0, mas[50], number = 0, max;
+
+	printf("Введите текст. По окончании ввода нажмите CTRL/Z \n");
+	while ((symbol1 = getchar()) != EOF) {
+		if (symbol1 != '.' && symbol1 != '!' && symbol1 != '?') {
+			if (symbol1 != ' ' && symbol1 != '\n' && symbol1 != '	' && (symbol0 == ' ' || symbol0 == '\n' || symbol0 == '	')) {
+				count++;
+			}
+		}
+		else {
+			mas[number] = count;
+			number++;
+			count = 0;
+		}
+		symbol0 = symbol1;
+	}
+
+	max = mas[0];
+	for (int i = 1; i < number; i++) {
+		if (mas[i] > max) {
+			max = mas[i];
+		}
+	}
+
+	printf("В тексте %d предложений.\n", number);
+	for (int i = max; i > 0; i--) {
+		for (int j = 0; j < number; j++) {
+			if (mas[j] < i) {
+				printf(" ");
+			}
+			else {
+				printf("*");
+			}
+			printf(" ");
+		}
+		printf("\n");
+	}
+	_getch();
+}

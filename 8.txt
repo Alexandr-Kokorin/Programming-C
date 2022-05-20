@@ -1,0 +1,53 @@
+#include <iostream>
+#include <conio.h>
+#include <locale.h>
+
+void printBinary(int number) {
+	for (int i = 0; i < 8; i++) {
+		if ((1 << 7) & number) printf("1");
+		else printf("0");
+		number <<= 1;
+	}
+}
+
+int main() {
+	setlocale(LC_ALL, "Rus");
+
+	int number, temp, mask;
+	int shiftRight, shiftLeft;
+
+	printf("¬ведите число: ");
+	scanf_s("%d", &number);
+	printf("¬ведите число позиций сдвига вправо: ");
+	scanf_s("%d", &shiftRight);
+	printf("¬ведите число позиций сдвига влево: ");
+	scanf_s("%d", &shiftLeft);
+	printf("ƒвоичное представление: ");
+	printBinary(number);
+	printf("\n");
+
+	temp = number;
+	for (int i = 0; i < shiftRight; i++) {
+		mask = 1 & temp;
+		mask = mask << 7;
+		temp = temp >> 1;
+		temp = temp | mask;
+	}
+	printf("—двиг вправо: ");
+	printBinary(temp);
+	printf(" = %d\n", temp);
+
+	temp = number;
+	for (int i = 0; i < shiftLeft; i++) {
+		mask = (1 << 7) & temp;
+		mask = mask >> 7;
+		temp = temp << 1;
+		temp = ((1 << 8) - 1) & temp;
+		temp = temp | mask;
+	}
+	printf("—двиг влево: ");
+	printBinary(temp);
+	printf(" = %d\n", temp);
+
+	_getch();
+}

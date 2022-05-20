@@ -1,0 +1,39 @@
+#include <iostream>
+#include <conio.h>
+#include <locale.h>
+
+bool isPrime(int number)
+{
+	if (number < 4) return true;
+	if (number % 2 == 0) return false;
+	for (int i = 3; i * i <= number; i += 2) {
+		if (number % i == 0) return false;
+	}
+	return true;
+}
+
+
+int main(void)
+{
+	setlocale(LC_ALL, "Rus");
+
+	int number;
+
+	printf("¬ведите положительное чЄтное число: ");
+	scanf_s("%d", &number);
+	while (number < 1 || number % 2 != 0) {
+		printf("¬веденное число не €вл€етс€ положительным чЄтным числом!\n");
+		printf("¬ведите положительное чЄтное число: ");
+		scanf_s("%d", &number);
+	}
+	printf("%d = \n", number);
+	printf("-------\n");
+	for (int i = 1; i <= number / 2; i++) {
+		int j = number - i;
+		if (isPrime(i) && isPrime(j)) {
+			printf("%d + %d\n", i, j);
+		}
+	}
+	printf("-------\n");
+	_getch();
+}

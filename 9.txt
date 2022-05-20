@@ -1,0 +1,60 @@
+#include <iostream>
+#include <conio.h>
+#include <locale.h>
+
+
+int main() {
+	setlocale(LC_ALL, "Rus");
+
+	int capacity, count;
+	int sumWeight, sumValue, number;
+	int maxWeight = 0, maxValue = 0;
+	int weight[20], value[20];
+	bool vector[20];
+
+	printf("Введите количество предметов: ");
+	scanf_s("%d", &count);
+	for (int i = 0; i < count; i++) {
+		printf("Введите массу %d-го предмета: ", i+1);
+		scanf_s("%d", &weight[i]);
+		printf("Введите полезность %d-го предмета: ", i+1);
+		scanf_s("%d", &value[i]);
+	}
+	printf("Введите вместимость ранца: ");
+	scanf_s("%d", &capacity);
+
+	for (int i = 0; i < (1 << count); i++) {
+		sumWeight = 0; 
+		sumValue = 0; 
+		number = i;
+		for (int j = count - 1; j >= 0; j--) {
+			if (number & 1) {
+				sumWeight += weight[j];
+				sumValue += value[j];
+			}
+			number >>= 1;
+		}
+		if (sumValue > maxValue && sumWeight <= capacity) {
+			maxValue = sumValue;
+			maxWeight = sumWeight;
+			number = i;
+			for (int j = count - 1; j >= 0; j--) {
+				if (number & 1) vector[j] = true;
+				else vector[j] = false;
+				number >>= 1;
+			}
+		}
+	}
+
+	printf("Решение для исходной задачи: (");
+	for (int i = 0; i < count; i++) {
+		if (vector[i]) printf("1");
+		else printf("0");
+		if (i != count -1) printf(",");
+	}
+	printf(")\n");
+	printf("Вес: %d\n", maxWeight);
+	printf("Полезность: %d\n", maxValue);
+
+	_getch();
+}

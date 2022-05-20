@@ -1,0 +1,54 @@
+#include <iostream>
+#include <conio.h>
+#include <locale.h>
+
+int main(void)
+{
+	setlocale(LC_ALL, "Rus");
+
+	int day, month, year, days[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }, result;
+
+	printf("Введите дату в формате дд.мм.гггг: ");
+	scanf_s("%d.%d.%d", &day, &month, &year);
+	if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) {
+		days[1] = 29;
+	}
+	while (not(1582 <= year && year <= 4902)) {
+		printf("Год введен некорректно!\n");
+		printf("Введите год ещё раз: ");
+		scanf_s("%d", &year);
+		if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) {
+			days[1] = 29;
+		}
+	}
+	while (not(1 <= month && month <= 12)) {
+		printf("Месяц введен некорректно!\n");
+		printf("Введите месяц ещё раз: ");
+		scanf_s("%d", &month);
+	}
+	while (not(1 <= day && day <= days[month - 1])) {
+		printf("День введен некорректно!\n");
+		printf("Введите день ещё раз: ");
+		scanf_s("%d", &day);
+	}
+	month -= 2;
+	if (month < 1) {
+		month += 12;
+		year--;
+	}
+	result = (int(2.6 * month - 0.2) + day + (year % 100) + ((year % 100) / 4) + ((year / 100) / 4) - (2 * (year / 100))) % 7;
+	if (result < 0) {
+		result += 7;
+	}
+	switch (result) {
+	case 0: printf("Воскресенье"); break;
+	case 1: printf("Понедельник"); break;
+	case 2: printf("Вторник"); break;
+	case 3: printf("Среда"); break;
+	case 4: printf("Четверг"); break;
+	case 5: printf("Пятница"); break;
+	case 6: printf("Суббота"); break;
+	default: break;
+	}
+	_getch();
+}

@@ -1,0 +1,40 @@
+#include <iostream>
+#include <conio.h>
+#include <locale.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main(void)
+{
+	setlocale(LC_ALL, "Rus");
+	srand(time(NULL));
+
+	char symbol = 'y';
+	int number, guess, count;
+
+	while (symbol == 'Y' || symbol == 'y') {
+		number = rand() % 101;
+		count = 1;
+		printf("Число загадано! Выдвиньте ваше предположение: ");
+		scanf_s("%d", &guess);
+		while (guess != number && count < 10) {
+			count++;
+			if (guess > number) {
+				printf("Загаданное число меньше\n");
+			}
+			else {
+				printf("Загаданное число больше\n");
+			}
+			printf("Ваше новое предположение: ");
+			scanf_s("%d", &guess);
+		}
+		if (count >= 10) {
+			printf("Увы, но это поражение. Было загадано число %d\n", number);
+		}
+		else {
+			printf("Поздравляю! Вы отгадали число и потратили на это %d попыток\n", count);
+		}
+		printf("Хотите сыграть ещё раз? Нажмите Y/N\n");
+		symbol = _getch();
+	}
+}

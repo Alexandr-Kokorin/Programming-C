@@ -1,0 +1,61 @@
+#include <iostream>
+#include <conio.h>
+#include <locale.h>
+
+int main() {
+	setlocale(LC_ALL, "Rus");
+
+	int number;
+	int matrix[20][20];
+	bool flag;
+
+	printf("Введите размер квадратной матрицы: ");
+	scanf_s("%d", &number);
+	for (int i = 0; i < number; i++) {
+		for (int j = 0; j < number; j++) {
+			printf("Введите matrix[%d][%d]: ", i, j);
+			scanf_s("%d", &matrix[i][j]);
+		}
+	}
+
+	flag = true;
+	for (int i = 0; i < number / 2; i++) {
+		for (int j = 0; j < number; j++) {
+			if (matrix[i][j] != matrix[number - i - 1][j]) {
+				flag = false;
+				break;
+			}
+		}
+		if (flag == false) break;
+	}
+	if (flag) printf("Матрица симметрична относительно горизонтали\n");
+	else printf("Матрица НЕ симметрична относительно горизонтали\n");
+
+	flag = true;
+	for (int i = 0; i < number; i++) {
+		for (int j = 0; j < number / 2; j++) {
+			if (matrix[i][j] != matrix[i][number-j-1]) {
+				flag = false;
+				break;
+			}
+		}
+		if (flag == false) break;
+	}
+	if (flag) printf("Матрица симметрична относительно вертикали\n");
+	else printf("Матрица НЕ симметрична относительно вертикали\n");
+
+	flag = true;
+	for (int i = 0; i < number; i++) {
+		for (int j = 0; j < number; j++) {
+			if (matrix[i][j] != matrix[number - i - 1][number - j - 1]) {
+				flag = false;
+				break;
+			}
+		}
+		if (flag == false) break;
+	}
+	if (flag) printf("Матрица симметрична относительно центра\n");
+	else printf("Матрица НЕ симметрична относительно центра\n");
+
+	_getch();
+}

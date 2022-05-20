@@ -1,0 +1,85 @@
+#include <iostream>
+#include <cstdlib>
+#include <conio.h>
+#include <locale.h>
+#include <malloc.h>
+
+
+int strcmp_my(int i1, int i2, int* p[]) {
+	int i = 0;
+	while (p[i1][i] == p[i2][i]) {
+		i++;
+	}
+	if (p[i1][i] > p[i2][i]) {
+		return i1;
+	}
+	else {
+		return i2;
+	}
+}
+
+void sort(int* p[], int n, int* index) {
+	bool f = true;
+	while (f) {
+		f = false;
+		for (int i = 1; i < n; i++) {
+			if (strcmp_my(i - 1, i, p) == i - 1) {
+				int* tmp = p[i - 1];
+				p[i - 1] = p[i];
+				p[i] = tmp;
+				int tm = index[i - 1];
+				index[i - 1] = index[i];
+				index[i] = tm;
+				f = true;
+			}
+		}
+	}
+}
+
+int main() {
+	setlocale(LC_ALL, "Rus");
+
+	int** p;
+	int* index;
+	char prev = ' ', act = ' ';
+	int i, j;
+
+	i = 0;
+	j = 0;
+	p = (int**)malloc(sizeof(int*));
+	p[i] = (int*)malloc(255 * sizeof(char));
+	index = (int*)malloc(sizeof(int));
+	printf("Введите строки, пустая строка - конец ввода:\n");
+	while ((act = getchar()) != '\n' || prev != '\n') {
+		p[i][j] = act;
+		prev = act;
+		j++;
+		if (act == '\n') {
+			index[i] = j;
+			i++;
+			p = (int**)realloc(p, (i + 1) * sizeof(int*));
+			p[i] = (int*)malloc(255 * sizeof(char));
+			index = (int*)realloc(index, (i + 1) * sizeof(int));
+			j = 0;
+		}
+	}
+
+	printf("Исходный текст:\n");
+	for (int x = 0; x < i; x++) {
+		for (int y = 0; y < index[x]; y++) {
+			printf("%c", p[x][y]);
+		}
+	}
+	printf("\n");
+
+	sort(p, i, index);
+
+	printf("Отсортированный текст:\n");
+	for (int x = 0; x < i; x++) {
+		for (int y = 0; y < index[x]; y++) {
+			printf("%c", p[x][y]);
+		}
+	}
+
+	_getch();
+}
